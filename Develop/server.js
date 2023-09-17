@@ -3,12 +3,12 @@ const path = require('path');
 const fs = require('fs');
 const uniqid = require('uniqid');
 
-const PORT = process.env.port || 3001;
+
+const PORT = process.env.PORT || 3001;
 const app = express();
 
 app.use(express.json());
 app.use(express.static('Develop/public'));
-
 app.use(express.urlencoded({ extended: true }));
 
 // html routes
@@ -63,7 +63,7 @@ app.get('/api/notes', function (req, res) {
   
       res.json(response);
     } else {
-      res.json("Error in posting new note");
+      res.json("An error occured when posting");
     }
   });
 
@@ -80,7 +80,7 @@ app.delete('/api/notes/:id', (req, res) => {
         addNew('Develop/db/db.json', filterData);
       }
     });
-    res.send(`Deleted note with ${req.params.id}`);
+    res.send(`The following were deleted, Note- ${req.params.id}`);
   });
 
 
