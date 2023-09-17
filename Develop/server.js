@@ -7,12 +7,12 @@ const PORT = process.env.port || 3001;
 const app = express();
 
 app.use(express.json());
-app.use(express.static("Develop/public"));
+app.use(express.static('Develop/public'));
 
 app.use(express.urlencoded({ extended: true }));
 
 // html routes
-app.get('/notes.html', (req, res) => {
+app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, '/public/notes.html'));
 });
 
@@ -21,8 +21,8 @@ app.get('*', (req, res) => {
 });
 
 // api routes
-app.get("/api/notes", function (req, res) {
-    fs.readFile("Develop/db/db.json", "utf8", (err, data) => {
+app.get('/api/notes', function (req, res) {
+    fs.readFile('Develop/db/db.json', "utf8", (err, data) => {
       var jsonData = JSON.parse(data);
       res.json(jsonData);
     });
@@ -45,7 +45,7 @@ app.get("/api/notes", function (req, res) {
     err ? console.error(err) : console.info(`\nData written to ${destination}`)
   );
 
-  app.post("/api/notes", (req, res) => {
+  app.post('/api/notes', (req, res) => {
     const { title, text } = req.body;
     if (title && text) {
       const newNote = {
@@ -54,7 +54,7 @@ app.get("/api/notes", function (req, res) {
         id: uniqid(),
       };
   
-      addNote(newNote, "Develop/db/db.json");
+      addNote(newNote, 'Develop/db/db.json');
   
       const response = {
         status: "success",
@@ -68,16 +68,16 @@ app.get("/api/notes", function (req, res) {
   });
 
 //   delete post 
-app.delete("/api/notes/:id", (req, res) => {
+app.delete('/api/notes/:id', (req, res) => {
     let id = req.params.id;
     let parsedData;
-    fs.readFile("Develop/db/db.json", "utf8", (err, data) => {
+    fs.readFile('Develop/db/db.json', "utf8", (err, data) => {
       if (err) {
         console.error(err);
       } else {
         parsedData = JSON.parse(data);
         const filterData = parsedData.filter((note) => note.id !== id);
-        addNew("Develop/db/db.json", filterData);
+        addNew('Develop/db/db.json', filterData);
       }
     });
     res.send(`Deleted note with ${req.params.id}`);
